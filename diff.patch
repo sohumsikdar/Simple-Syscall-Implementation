@@ -1,0 +1,39 @@
+diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+index 733def8a1..1308dea5f 100644
+--- a/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -370,6 +370,7 @@
+ 446	common	landlock_restrict_self	sys_landlock_restrict_self
+ 447	common	memfd_secret		sys_memfd_secret
+ 448	common	process_mrelease	sys_process_mrelease
++449	common	kern_2D_memcpy		sys_kern_2D_memcpy
+ #
+ # Due to a historical design error, certain syscalls are numbered differently
+ # in x32 as compared to native x86_64.  These syscalls have numbers 512-547.
+diff --git a/kernel/sys.c b/kernel/sys.c
+index 8fdac0d90..6663b77ec 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -415,6 +415,22 @@ SYSCALL_DEFINE2(setregid, gid_t, rgid, gid_t, egid)
+ 	return __sys_setregid(rgid, egid);
+ }
+ 
++SYSCALL_DEFINE4(kern_2D_memcpy, float *, MAT1, float *, MAT2, int, ROW, int, COL)
++{
++	float kerMat[ROW][COL];
++	if(copy_from_user(&kerMat, MAT2, sizeof(kerMat)) != 0) 
++	{
++		return -EFAULT;
++	}
++
++	if(copy_to_user(MAT1, &kerMat, sizeof(kerMat)) != 0)
++	{
++		return -EFAULT;
++	}	
++
++	return 0;
++}
++
+ /*
+  * setgid() is implemented like SysV w/ SAVED_IDS
+  *
