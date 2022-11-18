@@ -12,7 +12,7 @@ Where we define the following function
 
     SYSCALL_DEFINE4(kern_2D_memcpy, float *, MAT1, float *, MAT2, int, ROW, int COL)
 
-We take the pointers two two float matrices where `MAT1` is the destination matrix and `MAT2` is the source matrix. 
+We take the pointers to the two float matrices where `MAT1` is the destination matrix and `MAT2` is the source matrix. 
 We create a new matrix of dimensions ROWxCOL in the kernel space to which we then copy the contents of `MAT2` using `copy_from_user` and then we copy it to `MAT1` using `copy_to_user`
 If any of the above are not possible we return `-EFAULT` else return `0` incase of success.
 
@@ -37,7 +37,7 @@ After adding the syscalls we need to run the following commands to configure our
 <br>
 
 ## Test the syscall
-Make the test files in the any directory and then run
+Make the test files in any directory and then run
 
     gcc test.c -o test
     ./test
