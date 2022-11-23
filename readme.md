@@ -10,7 +10,7 @@ Then implement the same syscall in `sys.c` located at `buiild/linux-5.xx.xx/kern
     
 Where we define the following function 
 
-    SYSCALL_DEFINE4(kern_2D_memcpy, float *, MAT1, float *, MAT2, int, ROW, int COL)
+    SYSCALL_DEFINE4(kern_2D_memcpy, float *, MAT1, float *, MAT2, int, ROW, int, COL)
 
 We take the pointers to the two float matrices where `MAT1` is the destination matrix and `MAT2` is the source matrix. 
 We create a new matrix of dimensions ROWxCOL in the kernel space to which we then copy the contents of `MAT2` using `copy_from_user` and then we copy it to `MAT1` using `copy_to_user`
